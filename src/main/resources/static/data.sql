@@ -1,0 +1,1 @@
+INSERT INTO evento(nome, local, data, horario) VALUES ("Teste","Local de Teste","11-10-2018","15-24");
