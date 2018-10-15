@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +64,7 @@ public class EventoController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String adicionarConvidado(@PathVariable("id") long id, Convidado convidado) {
+	public String adicionarConvidado(@PathVariable("id") long id, @Valid Convidado convidado) {
 		Evento evento = er.findById(id);
 		convidado.setEvento(evento);
 		cr.save(convidado);

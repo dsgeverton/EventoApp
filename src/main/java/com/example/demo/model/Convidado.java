@@ -18,9 +18,11 @@ public class Convidado implements Serializable{
 	private long id;
 	
 	@Id
+	@javax.validation.constraints.NotEmpty
 	private String cpf;
 	
 	@Column(length = 50)
+	@javax.validation.constraints.NotEmpty
 	private String nome;
 	
 	@ManyToOne
