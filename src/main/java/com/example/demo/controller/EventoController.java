@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.model.Convidado;
 import com.example.demo.model.Evento;
+import com.example.demo.repository.ConvidadoRepository;
 import com.example.demo.repository.EventoRepository;
 
 @Controller
@@ -15,6 +17,9 @@ public class EventoController {
 
 	@Autowired
 	private EventoRepository er;
+	
+	@Autowired
+	private ConvidadoRepository cr;
 	
 	@RequestMapping(value = "/cadastrarEvento", method = RequestMethod.GET)
 	public String form() {
@@ -26,7 +31,7 @@ public class EventoController {
 		
 		er.save(e);
 		
-		return "redirect:/";
+		return "redirect:/eventos";
 	}
 	
 	@RequestMapping("/eventos")
@@ -37,19 +42,32 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping("/deletar")
-	public ModelAndView listaEventos(Evento e, long id) {
-		ModelAndView mv = new ModelAndView("index");
-		er.delete(e);
-		return mv;
+	@RequestMapping(value = "/deletar/{id}")
+	public String deletarEvento(@PathVariable("id") long id) {
+		Evento evento = er.findById(id);
+		er.delete(evento);
+		return "redirect:/eventos";
 	}
 	
-	@RequestMapping("/{id}")
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView detalhesEvento(@PathVariable("id") long id) {
 		Evento e = er.findById(id);
 		ModelAndView mv = new ModelAndView("evento/detalhesEvento");
 		mv.addObject("evento", e);
+		
+		Iterable<Convidado> convidados = cr.findByEvento(e);
+		mv.addObject("convidados", convidados);
+		
 		return mv;
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	public String adicionarConvidado(@PathVariable("id") long id, Convidado convidado) {
+		Evento evento = er.findById(id);
+		convidado.setEvento(evento);
+		cr.save(convidado);
+		
+		return "redirect:/{id}";
 	}
 	
 }

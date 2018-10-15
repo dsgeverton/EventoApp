@@ -34,11 +34,11 @@
 			</thead>
 			<tbody>			
 				<tr th:each="evento : ${eventos}">
-					<td> <a th:href="${(#mvc.url('EC#detalhesEvento').arg(0, evento.id).build())}"> <span th:text="${evento.nome}"> </a> </span> </td>
+					<td> <a th:href="${(#mvc.url('EC#detalhesEvento').arg(0, evento.id).build())}"> <span th:text="${evento.nome}"></span> </a> </td>
 					<td> <span th:text="${evento.local}"></span> </td>
 					<td> <span th:text="${evento.data}"></span> </td>
 					<td> <span th:text="${evento.horario}"></span> </td>
-					<td> <a href="/deletar/${evento}" class="btn-floating btn-small waves-effect waves-light btn"><i class="material-icons left">delete</i></a> </td>
+					<td> <a th:href="${(#mvc.url('EC#deletarEvento').arg(0, evento.id).build())}" class="btn-floating btn-small waves-effect waves-light btn"><i class="material-icons left">delete</i></a> </td>
 				</tr>
 			</tbody>
 		</table>

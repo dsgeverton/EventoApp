@@ -18,7 +18,7 @@
 
 	<body class="container">
 	
-		<h1>Lista de Eventos</h1>
+		<h1>Evento - <span th:text="${evento.nome}"></span> </h1>
 	
 		<h3><a href="/eventos" class="waves-effect waves-light btn"><i class="material-icons left">list</i>Lista de Eventos</a></h3>
 		<div th:each="evento : ${evento}" class="container">
@@ -28,8 +28,35 @@
 			 	<p> <span th:text="${evento.data}" ></span> </p>
 			 	<p> <span th:text="${evento.horario}" ></span> </p>
 			</div>
-		</div>
 	
+			<h3>Convidados</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>CPF</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="convidado : ${convidados}">
+					 	<td th:text="${convidado.nome}" ></td>
+					 	<td th:text="${convidado.cpf}" ></td>
+					</tr>
+				</tbody>
+			</table>
+	
+			<form method="POST" action="">
+				<div class="row">
+					<div class="input field col s6">
+						<input type="text" maxlength="50" value="" name="nome" placeholder="Nome" required>				
+					</div>
+					<div class="input field col s6">
+						<input type="text" value="" name="cpf" placeholder="CPF" data-mask="000.000.000-00" data-mask-selectonfocus="true" required>
+					</div>
+				</div>
+				<button class="waves-effect waves-light btn red" type="submit"><i class="material-icons left">add</i>  Adicionar </button>	
+			</form>
+		</div>
 	
 		<!--JavaScript at end of body for optimized loading-->
       	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
