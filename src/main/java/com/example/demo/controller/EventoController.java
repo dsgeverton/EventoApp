@@ -1,13 +1,17 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Convidado;
 import com.example.demo.model.Evento;
@@ -16,7 +20,7 @@ import com.example.demo.repository.EventoRepository;
 
 @Controller
 public class EventoController {
-
+	
 	@Autowired
 	private EventoRepository er;
 	
@@ -29,10 +33,15 @@ public class EventoController {
 	}
 	
 	@RequestMapping(value = "/cadastrarEvento", method = RequestMethod.POST)
-	public String form(Evento e) {
-		
+	public String form(@Valid Evento e, BindingResult result, RedirectAttributes attributes) {
+		if (result.hasErrors()) {
+			attributes.addFlashAttribute("mensagem", "Verifique os campos do formulário");
+			attributes.addFlashAttribute("flag", 1);
+			return "redirect:/{id}";
+		}
 		er.save(e);
-		
+		attributes.addFlashAttribute("mensagem", "Evento "+e.getNome()+" cadastrado com sucesso!");
+		attributes.addFlashAttribute("flag", 0);
 		return "redirect:/eventos";
 	}
 	
@@ -64,11 +73,37 @@ public class EventoController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String adicionarConvidado(@PathVariable("id") long id, @Valid Convidado convidado) {
-		Evento evento = er.findById(id);
-		convidado.setEvento(evento);
-		cr.save(convidado);
+	public String adicionarConvidado(@PathVariable("id") long id, @Valid Convidado convidado, BindingResult result, RedirectAttributes attributes) {
+		if (result.hasErrors()) {
+			attributes.addFlashAttribute("mensagem", "Verifique os campos do formulário");
+			attributes.addFlashAttribute("flag", 1);
+			return "redirect:/{id}";
+		} else {
+			
+			Evento e = er.findById(id);
+			List<Convidado> convidados = (List<Convidado>) cr.findByEvento(e);
+			for (Convidado c : convidados) {
+				System.out.println("entrou\n\nC.cpf: "+c.getCpf()+"\nconvidado.cpf:"+convidado.getCpf()+"\n\n\n");
+				if(c.getCpf().equals(convidado.getCpf())) {
+					attributes.addFlashAttribute("mensagem", "O CPF informado já está em uso!");
+					attributes.addFlashAttribute("flag", 1);
+					return "redirect:/{id}";
+				}
+			}
+			
+			Evento evento = er.findById(id);
+			convidado.setEvento(evento);
+			cr.save(convidado);
+			attributes.addFlashAttribute("mensagem", "O convidado "+ convidado.getNome() +" foi adicionado!");
+			attributes.addFlashAttribute("flag", 0);
+			return "redirect:/{id}";
+		}
 		
+	}
+	
+	@RequestMapping(value = "/{id}")
+	public String limparAlerta( @PathVariable("id") long id, RedirectAttributes attributes) {
+		attributes.addFlashAttribute("mensagem", "");
 		return "redirect:/{id}";
 	}
 	

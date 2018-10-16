@@ -13,16 +13,19 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Evento App</title>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	
-	<body class="container">
+	<body class="container spacing">
 	
 		<h1>Cadastro de Eventos</h1>
 		<h3><a href="/eventos" class="waves-effect waves-light btn"><i class="material-icons left">list</i>Lista de Eventos</a></h3>
 		
-		<form method="POST" action="">
-			<input type="text" maxlength="50" value="" name="nome" placeholder="Nome" required>
+		<form class="form-style form-evento-padding-bottom" method="POST">
 			<div class="row">
+				<div class="input field col s12">
+					<input type="text" maxlength="50" value="" name="nome" placeholder="Nome" required>
+				</div>
 				<div class="input field col s6">
 					<input type="text" maxlength="255" value="" name="local" placeholder="Local" required>
 				</div>
@@ -32,8 +35,11 @@
 				<div class="input field col s3">
 					<input type="time" value="" name="horario" placeholder="Horário" required>
 				</div>
+				<div class="input field col s6">
+					<input type="url" value="" name="imagelink" placeholder="Cole aqui o link da imagem" required>
+				</div>
 			</div>
-			<button class="waves-effect waves-light btn" type="submit"><i class="material-icons right">cloud</i>  Salvar </button>	
+			<button class="waves-effect waves-light btn right" type="submit"><i class="material-icons right">cloud</i>  Salvar </button>	
 		</form>
 		<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	</body>

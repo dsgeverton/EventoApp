@@ -2,13 +2,13 @@ package com.example.demo.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 @Entity	
 public class Evento implements Serializable{
@@ -19,11 +19,15 @@ public class Evento implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Codigo")
 	private long id;
+	@NotEmpty
 	@Column(length = 50)
 	private String nome;
+	@NotEmpty
 	private String local;
+	@NotEmpty
 	@Column(length = 20)
 	private String data;
+	@NotEmpty
 	@Column(length = 20)
 	private String horario;
 	
