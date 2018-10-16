@@ -2,13 +2,14 @@ package com.example.demo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotEmpty;
 
 @Entity	
 public class Evento implements Serializable{
@@ -19,19 +20,21 @@ public class Evento implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Codigo")
 	private long id;
-	@NotEmpty
+	@javax.validation.constraints.NotEmpty
 	@Column(length = 50)
 	private String nome;
-	@NotEmpty
+	@javax.validation.constraints.NotEmpty
 	private String local;
-	@NotEmpty
+	@javax.validation.constraints.NotEmpty
 	@Column(length = 20)
 	private String data;
-	@NotEmpty
+	@javax.validation.constraints.NotEmpty
 	@Column(length = 20)
 	private String horario;
 	
-	@OneToMany
+	private String imagem = "https://lh6.googleusercontent.com/-S4JRFil2Mio/AAAAAAAAAAI/AAAAAAAAAZM/SoDL3SPaN-E/photo.jpg";
+	
+	@OneToMany(cascade=CascadeType.REMOVE)
 	private List<Convidado> convidados;
 	
 	public long getId() {
@@ -70,5 +73,10 @@ public class Evento implements Serializable{
 	public void setConvidados(List<Convidado> convidados) {
 		this.convidados = convidados;
 	}
-	
+	public String getImagem() {
+		return imagem;
+	}
+	public void setImagem(String imageURL) {
+		this.imagem = imageURL;
+	}
 }
