@@ -27,30 +27,32 @@
 					<div class="col s12 m5">
 						<div class="card">
 							<div class="card-image">
-		          				<img th:src='@{evento.imagem}'>
+		          				<img th:src="@{${evento.imagem}}">
 							 	<span class="text-shadown card-title" th:text="${evento.nome}" ></span>
 		        			</div>
 						</div>
 					</div>
-				 	<p> <span th:text="${evento.local}" ></span> </p>
-				 	<p> <span th:text="${evento.data}" ></span> </p>
-				 	<p> <span th:text="${evento.horario}" ></span> </p>
-				 	<p> <span th:text="${evento.imagem}" ></span> </p>
+				 	<p>Local: <span th:text="${evento.local}" ></span> </p>
+				 	<p>Data: <span th:text="${evento.data}" ></span> </p>
+				 	<p>Horário: <span th:text="${evento.horario}" ></span> </p>
+				 	<p>Imagem URL: <span th:text="${evento.imagem}" ></span> </p>
 				</div>
 		
 				<h3>Convidados</h3>
 				<th:block th:include="alert"></th:block>
-				<table>
+				<table class="centered highlight">
 					<thead>
 						<tr>
 							<th>Nome</th>
 							<th>CPF</th>
+							<th>Excluir</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="convidado : ${convidados}">
 						 	<td th:text="${convidado.nome}" ></td>
 						 	<td th:text="${convidado.cpf}" ></td>
+						 	<td><a th:href="${(#mvc.url('EC#deletarConvidado').arg(0, convidado.id).build())}" class="waves-effect waves-light"><i class="material-icons center">delete</i></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -58,14 +60,16 @@
 		
 				<form class="form-style" method="POST" action="">
 					<div class="row">
-						<div class="input field col s6">
+						<div class="input field col s12 m6">
 							<input type="text" maxlength="50" value="" name="nome" placeholder="Nome"  >				
 						</div>
-						<div class="input field col s6">
+						<div class="input field col s12 m6">
 							<input type="text" value="" name="cpf" placeholder="CPF" data-mask="000.000.000-00" data-mask-selectonfocus="true">
 						</div>
+						<div class="input field col s12 m4">
+							<button class="waves-effect waves-light btn red" type="submit"><i class="material-icons left">add</i>Adicionar</button>	
+						</div>
 					</div>
-					<button class="waves-effect waves-light btn red" type="submit"><i class="material-icons left">add</i>  Adicionar </button>	
 				</form>
 			</div>
 		

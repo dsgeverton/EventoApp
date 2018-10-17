@@ -37,7 +37,7 @@ public class EventoController {
 		if (result.hasErrors()) {
 			attributes.addFlashAttribute("mensagem", "Verifique os campos do formulário");
 			attributes.addFlashAttribute("flag", 1);
-			return "redirect:/{id}";
+			return "redirect:/eventos";
 		}
 		er.save(e);
 		attributes.addFlashAttribute("mensagem", "Evento "+e.getNome()+" cadastrado com sucesso!");
@@ -53,11 +53,21 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/deletar/{id}")
-	public String deletarEvento(@PathVariable("id") long id) {
+	@RequestMapping("/deletarEvento")
+	public String deletarEvento(long id) {
 		Evento evento = er.findById(id);
 		er.delete(evento);
 		return "redirect:/eventos";
+	}
+	
+	@RequestMapping("/deletarConvidado")
+	public String deletarConvidado(long id) {
+		Convidado convidado = cr.findById(id);
+		cr.delete(convidado);
+		
+		Evento evento = convidado.getEvento();
+		
+		return "redirect:/"+evento.getId();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -99,12 +109,6 @@ public class EventoController {
 			return "redirect:/{id}";
 		}
 		
-	}
-	
-	@RequestMapping(value = "/{id}")
-	public String limparAlerta( @PathVariable("id") long id, RedirectAttributes attributes) {
-		attributes.addFlashAttribute("mensagem", "");
-		return "redirect:/{id}";
 	}
 	
 }

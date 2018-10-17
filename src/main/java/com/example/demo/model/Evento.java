@@ -18,21 +18,24 @@ public class Evento implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "Codigo")
 	private long id;
+	
 	@javax.validation.constraints.NotEmpty
 	@Column(length = 50)
 	private String nome;
+	
 	@javax.validation.constraints.NotEmpty
 	private String local;
+	
 	@javax.validation.constraints.NotEmpty
 	@Column(length = 20)
 	private String data;
+	
 	@javax.validation.constraints.NotEmpty
 	@Column(length = 20)
 	private String horario;
 	
-	private String imagem = "https://lh6.googleusercontent.com/-S4JRFil2Mio/AAAAAAAAAAI/AAAAAAAAAZM/SoDL3SPaN-E/photo.jpg";
+	private String imagem;
 	
 	@OneToMany(cascade=CascadeType.REMOVE)
 	private List<Convidado> convidados;
