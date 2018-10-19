@@ -39,6 +39,8 @@ public class EventoController {
 			attributes.addFlashAttribute("flag", 1);
 			return "redirect:/eventos";
 		}
+		if(e.getImagem().equals(""))
+			e.setImagem("http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg");
 		er.save(e);
 		attributes.addFlashAttribute("mensagem", "Evento "+e.getNome()+" cadastrado com sucesso!");
 		attributes.addFlashAttribute("flag", 0);
@@ -53,6 +55,26 @@ public class EventoController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/editarEvento", method = RequestMethod.GET)
+	public ModelAndView editarEvento(long id) {
+		Evento e = er.findById(id);
+		ModelAndView mv = new ModelAndView("evento/editarEvento");
+		mv.addObject("evento", e);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/editarEvento", method = RequestMethod.POST)
+	public String editarEvento(@Valid Evento e, BindingResult result, RedirectAttributes attributes ) {
+		if(result.hasErrors()) {
+			attributes.addFlashAttribute("mensagem", "Verifique os campos do formulário");
+			attributes.addFlashAttribute("flag", 1);
+			return "redirect:/editarEventos";
+		}
+		er.save(e);
+		return "redirect:/"+e.getId();
+	}
+	
 	@RequestMapping("/deletarEvento")
 	public String deletarEvento(long id) {
 		Evento evento = er.findById(id);
@@ -61,8 +83,8 @@ public class EventoController {
 	}
 	
 	@RequestMapping("/deletarConvidado")
-	public String deletarConvidado(long id) {
-		Convidado convidado = cr.findById(id);
+	public String deletarConvidado(String cpf) {
+		Convidado convidado = cr.findByCpf(cpf);
 		cr.delete(convidado);
 		
 		Evento evento = convidado.getEvento();
@@ -93,7 +115,7 @@ public class EventoController {
 			Evento e = er.findById(id);
 			List<Convidado> convidados = (List<Convidado>) cr.findByEvento(e);
 			for (Convidado c : convidados) {
-				System.out.println("entrou\n\nC.cpf: "+c.getCpf()+"\nconvidado.cpf:"+convidado.getCpf()+"\n\n\n");
+				System.out.println("entrou\nC.cpf: "+c.getCpf()+"\nconvidado.cpf:"+convidado.getCpf()+"\n\n\n");
 				if(c.getCpf().equals(convidado.getCpf())) {
 					attributes.addFlashAttribute("mensagem", "O CPF informado já está em uso!");
 					attributes.addFlashAttribute("flag", 1);

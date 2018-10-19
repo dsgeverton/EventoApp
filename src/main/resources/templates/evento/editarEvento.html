@@ -20,7 +20,7 @@
 		<header>
 			<nav>
 			    <div class="nav-wrapper red">
-			    	<a href="#" class="brand-logo center">Cadastro de Eventos</a>
+			    	<a href="#" class="brand-logo center">Editar evento</a>
 			      	<ul id="nav-mobile" class="left hide-on-med-and-down">		        
 			      	</ul>
 				</div>
@@ -29,24 +29,24 @@
 		<h3><a href="/eventos" class="waves-effect waves-light btn"><i class="material-icons left">list</i>Lista de Eventos</a></h3>
 		
 		<form class="form-style form-evento-padding-bottom" method="POST">
-			<div class="row">
+			<div th:each="evento : ${evento}" class="row">
 				<div class="input field col s12">
-					<input type="text" maxlength="50" value="" name="nome" placeholder="Nome" >
+					<input type="text" maxlength="50" th:attr="value=${evento.nome}" name="nome" placeholder="Nome" >
 				</div>
 				<div class="input field col s12 m6">
-					<input type="text" maxlength="255" value="" name="local" placeholder="Local">
+					<input type="text" maxlength="255" th:attr="value=${evento.local}" name="local" placeholder="Local">
 				</div>
 				<div class="input field col s6 m3">
-					<input type="date" value="" name="data" placeholder="Data" >
+					<input type="date" th:attr="value=${evento.data}" name="data" placeholder="Data" >
 				</div>
 				<div class="input field col s6 m3">
-					<input type="time" value="" name="horario" placeholder="Horário">
+					<input type="time" th:attr="value=${evento.horario}" name="horario" placeholder="Horário">
 				</div>
 				<div class="input field col s12">
-					<input type="text" value="" name="imagem" placeholder="Cole aqui o link da imagem" >
+					<input type="text" th:attr="value=${evento.imagem}" name="imagem" placeholder="Cole aqui o link da imagem" >
 				</div>
 			</div>
-			<button class="waves-effect waves-light btn right" type="submit"><i class="material-icons right">cloud</i>Salvar</button>	
+			<button class="waves-effect waves-light btn right" type="submit"><i class="material-icons right">cloud</i>  Salvar </button>	
 		</form>
 		<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	</body>
