@@ -39,8 +39,7 @@ public class EventoController {
 			attributes.addFlashAttribute("flag", 1);
 			return "redirect:/eventos";
 		}
-		if(e.getImagem().equals(""))
-			e.setImagem("http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg");
+		setImageDefault(e);
 		er.save(e);
 		attributes.addFlashAttribute("mensagem", "Evento "+e.getNome()+" cadastrado com sucesso!");
 		attributes.addFlashAttribute("flag", 0);
@@ -54,9 +53,9 @@ public class EventoController {
 		mv.addObject("eventos", eventos);
 		return mv;
 	}
-	
-	@RequestMapping(value = "/editarEvento", method = RequestMethod.GET)
-	public ModelAndView editarEvento(long id) {
+
+	@RequestMapping(value = "/editarEvento/{id}", method = RequestMethod.GET)
+	public ModelAndView editarEvento(@PathVariable("id") long id) {
 		Evento e = er.findById(id);
 		ModelAndView mv = new ModelAndView("evento/editarEvento");
 		mv.addObject("evento", e);
@@ -64,15 +63,19 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/editarEvento", method = RequestMethod.POST)
-	public String editarEvento(@Valid Evento e, BindingResult result, RedirectAttributes attributes ) {
-		if(result.hasErrors()) {
-			attributes.addFlashAttribute("mensagem", "Verifique os campos do formulário");
+	@RequestMapping(value = "/editarEvento/{id}", method = RequestMethod.POST)
+	public String atualizarEvento(@Valid Evento e,  BindingResult result, RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			attributes.addFlashAttribute("mensagem", "Algo de errado não está certo");
 			attributes.addFlashAttribute("flag", 1);
-			return "redirect:/editarEventos";
+			return "redirect:/" + e.getId();
 		}
+		setImageDefault(e);
 		er.save(e);
-		return "redirect:/"+e.getId();
+		attributes.addFlashAttribute("mensagem", "GGWP");
+		attributes.addFlashAttribute("flag", 0);
+		return "redirect:/" + e.getId();
 	}
 	
 	@RequestMapping("/deletarEvento")
@@ -111,7 +114,6 @@ public class EventoController {
 			attributes.addFlashAttribute("flag", 1);
 			return "redirect:/{id}";
 		} else {
-			
 			Evento e = er.findById(id);
 			List<Convidado> convidados = (List<Convidado>) cr.findByEvento(e);
 			for (Convidado c : convidados) {
@@ -128,9 +130,16 @@ public class EventoController {
 			cr.save(convidado);
 			attributes.addFlashAttribute("mensagem", "O convidado "+ convidado.getNome() +" foi adicionado!");
 			attributes.addFlashAttribute("flag", 0);
+			evento.setQtd_convidados(evento.getQtd_convidados()+1);
+			er.save(evento);
 			return "redirect:/{id}";
 		}
 		
+	}
+	
+	public void setImageDefault(Evento e) {
+		if(e.getImagem().equals(""))
+			e.setImagem("/img/No-image-available.jpg");
 	}
 	
 }

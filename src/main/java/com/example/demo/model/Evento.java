@@ -36,8 +36,10 @@ public class Evento implements Serializable{
 	
 	private String imagem;
 	
-	@OneToMany(orphanRemoval = true)
+	@OneToMany
 	private List<Convidado> convidados;
+	
+	private int qtd_convidados;
 	
 	public long getId() {
 		return id;
@@ -80,5 +82,11 @@ public class Evento implements Serializable{
 	}
 	public void setImagem(String imageURL) {
 		this.imagem = imageURL;
+	}
+	public int getQtd_convidados() {
+		return qtd_convidados;
+	}
+	public void setQtd_convidados(int qtd_convidados) {
+		this.qtd_convidados = qtd_convidados;
 	}
 }
